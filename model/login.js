@@ -1,4 +1,4 @@
-const { createHash } = require("node:crypto");
+const { getHash, encrypt, decrypt } = require("./cryptography");
 
 const accounts = [
   {
@@ -20,17 +20,6 @@ const accounts = [
     admin: false,
   },
 ];
-
-/**
- * Return the data's hash hex string
- * @param {string} data
- * @returns {string}
- */
-function getHash(data) {
-  const hash = createHash("sha256");
-  hash.update(data);
-  return hash.digest("hex");
-}
 
 module.exports = {
   /**
@@ -67,4 +56,6 @@ module.exports = {
     const hashPassword = getHash(password);
     return user.password === hashPassword;
   },
+  encrypt,
+  decrypt,
 };

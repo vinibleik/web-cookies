@@ -5,9 +5,14 @@ const {
   UpdateLoginSchema,
 } = require("../validators/loginValidator");
 
+const COOKIE_LOGIN = "auth_SES";
 const route = express.Router();
 
 route.get("/", (req, res) => {
+  let login = req.cookies[COOKIE_LOGIN];
+  if (login) {
+    return res.redirect("intranet");
+  }
   res.render("index");
 });
 
@@ -18,21 +23,44 @@ route.post("/login", (req, res) => {
       error: "Forneça login e password!",
     });
   }
-  res.cookie("login", value.login);
+
+  let cookieValue = "";
+
+  try {
+    cookieValue = Login.encrypt(value.login);
+  } catch (error) {
+    return res.render("index", {
+      error: "Something got wrong with the login sorry.",
+    });
+  }
+
+  res.cookie(COOKIE_LOGIN, cookieValue);
   res.redirect("intranet");
 });
 
 route.get("/logout", (req, res) => {
-  res.clearCookie("login");
+  res.clearCookie(COOKIE_LOGIN);
   res.redirect(".");
 });
 
 route.get("/intranet", (req, res) => {
-  const login = req.cookies.login;
+  let login = req.cookies[COOKIE_LOGIN];
   if (!login) {
     console.log("Não logado!");
-    return res.redirect(".");
+    return res.redirect("logout");
   }
+
+  try {
+    login = Login.decrypt(login);
+  } catch (error) {
+    login = "";
+  }
+
+  if (!Login.getUserByLogin(login)) {
+    console.log("User inexistent");
+    return res.redirect("logout");
+  }
+
   res.status(200).render("intranet", { login });
 });
 
@@ -45,7 +73,18 @@ route.post("/salvanome", (req, res) => {
     });
   }
 
-  res.cookie("login", value.newLogin);
+  let cookieValue = "";
+
+  try {
+    cookieValue = Login.encrypt(value.newLogin);
+  } catch (error) {
+    res.clearCookie(COOKIE_LOGIN);
+    return res.render("index", {
+      error: "Something got wrong with the login sorry.",
+    });
+  }
+
+  res.cookie(COOKIE_LOGIN, cookieValue);
   res.redirect("intranet");
 });
 

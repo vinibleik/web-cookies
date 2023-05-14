@@ -28,9 +28,9 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   // app._router.stack.forEach((e) => {
-  //   if (e.name == "cookieParser") {
-  //     console.log(e.handle.toString());
-  //   }
+  //   // if (e.name == "cookieParser") {
+  //   // console.log(e.handle.toString());
+  //   // }
   // });
   console.log(`Server listening on port ${PORT}`);
 });
