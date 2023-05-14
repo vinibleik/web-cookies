@@ -1,0 +1,24 @@
+.error {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+body {
+  margin: auto;
+  padding: 10px;
+  outline: 1px solid red;
+  width: 700px;
+}
+
+.login {
+  margin: 5px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 10px;
+}

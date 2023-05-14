@@ -1,0 +1,30 @@
+{
+  "name": "web-cookies",
+  "version": "1.0.0",
+  "description": "web authenticity, session and cookies exercise",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -e mustache,js,html,css index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "authenticity",
+    "session",
+    "cookies",
+    "web"
+  ],
+  "author": "Paradoxo",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.9.2",
+    "mustache-express": "^1.3.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
