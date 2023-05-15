@@ -11,7 +11,7 @@ const __route = "session";
 route.get("/", (req, res) => {
   let login = req.session.login;
   if (login !== undefined) {
-    return res.redirect("intranet");
+    return res.redirect("/session/intranet");
   }
   res.status(200).render("index", { __route });
 });
@@ -25,19 +25,19 @@ route.post("/login", (req, res) => {
     });
   }
   req.session.login = Login.encrypt(value.login);
-  res.redirect("intranet");
+  res.redirect("/session/intranet");
 });
 
 route.get("/logout", (req, res) => {
   req.session.login = undefined;
-  res.redirect(".");
+  res.redirect("/session");
 });
 
 route.get("/intranet", (req, res) => {
   let login = req.session.login;
   if (!login) {
     console.log("Usuário não logado!");
-    return res.redirect(".");
+    return res.redirect("/session");
   }
 
   try {
@@ -48,7 +48,7 @@ route.get("/intranet", (req, res) => {
 
   if (!Login.getUserByLogin(login)) {
     console.log("Usuário inexistente!");
-    res.redirect("logout");
+    res.redirect("/session/logout");
   }
 
   res.status(200).render("intranet", {
@@ -89,7 +89,7 @@ route.post("/salvanome", (req, res) => {
   }
 
   req.session.login = login;
-  res.redirect("intranet");
+  res.redirect("/session/intranet");
 });
 
 module.exports = route;

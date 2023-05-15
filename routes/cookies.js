@@ -12,7 +12,7 @@ const __route = "cookies";
 route.get("/", (req, res) => {
   let login = req.cookies[COOKIE_LOGIN];
   if (login) {
-    return res.redirect("intranet");
+    return res.redirect("/cookies/intranet");
   }
   res.status(200).render("index", {
     __route,
@@ -40,19 +40,19 @@ route.post("/login", (req, res) => {
   }
 
   res.cookie(COOKIE_LOGIN, cookieValue);
-  res.redirect("intranet");
+  res.redirect("/cookies/intranet");
 });
 
 route.get("/logout", (req, res) => {
   res.clearCookie(COOKIE_LOGIN);
-  res.redirect(".");
+  res.redirect("/cookies");
 });
 
 route.get("/intranet", (req, res) => {
   let login = req.cookies[COOKIE_LOGIN];
   if (!login) {
     console.log("Não logado!");
-    return res.redirect("logout");
+    return res.redirect("/cookies/logout");
   }
 
   try {
@@ -63,7 +63,7 @@ route.get("/intranet", (req, res) => {
 
   if (!Login.getUserByLogin(login)) {
     console.log("User inexistent");
-    return res.redirect("logout");
+    return res.redirect("/cookies/logout");
   }
 
   res.status(200).render("intranet", { __route, login });
@@ -92,7 +92,7 @@ route.post("/salvanome", (req, res) => {
   }
 
   res.cookie(COOKIE_LOGIN, cookieValue);
-  res.redirect("intranet");
+  res.redirect("/cookies/intranet");
 });
 
 module.exports = route;

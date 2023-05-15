@@ -6,6 +6,7 @@ const session = require("express-session");
 
 const cookieRouter = require("./routes/cookies");
 const sessionRouter = require("./routes/session");
+const passportRouter = require("./routes/passport");
 
 const PORT = 5500;
 const app = express();
@@ -22,8 +23,10 @@ app.use(cookieParser());
 app.use(
   session({ secret: "password", resave: false, saveUninitialized: false })
 );
+
 app.use("/cookies", cookieRouter);
 app.use("/session", sessionRouter);
+app.use("/passport", passportRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send(`
