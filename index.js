@@ -2,7 +2,10 @@ const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const mustacheExpress = require("mustache-express");
+const session = require("express-session");
+
 const cookieRouter = require("./routes/cookies");
+const sessionRouter = require("./routes/session");
 
 const PORT = 5500;
 const app = express();
@@ -16,7 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+app.use(
+  session({ secret: "password", resave: false, saveUninitialized: false })
+);
 app.use("/cookies", cookieRouter);
+app.use("/session", sessionRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send(`
@@ -28,9 +35,9 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   // app._router.stack.forEach((e) => {
-  //   // if (e.name == "cookieParser") {
-  //   // console.log(e.handle.toString());
-  //   // }
+  //   if (e.name == "session") {
+  //     console.log(e.handle.toString());
+  //   }
   // });
   console.log(`Server listening on port ${PORT}`);
 });

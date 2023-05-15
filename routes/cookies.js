@@ -7,20 +7,24 @@ const {
 
 const COOKIE_LOGIN = "auth_SES";
 const route = express.Router();
+const __route = "cookies";
 
 route.get("/", (req, res) => {
   let login = req.cookies[COOKIE_LOGIN];
   if (login) {
     return res.redirect("intranet");
   }
-  res.render("index");
+  res.status(200).render("index", {
+    __route,
+  });
 });
 
 route.post("/login", (req, res) => {
   const { error, value } = LoginSchema.validate(req.body);
   if (error || !Login.checkPassword(value.login, value.password)) {
     return res.render("index", {
-      error: "Forneça login e password!",
+      __route,
+      error: "Login or Password don't match!",
     });
   }
 
@@ -30,6 +34,7 @@ route.post("/login", (req, res) => {
     cookieValue = Login.encrypt(value.login);
   } catch (error) {
     return res.render("index", {
+      __route,
       error: "Something got wrong with the login sorry.",
     });
   }
@@ -61,13 +66,14 @@ route.get("/intranet", (req, res) => {
     return res.redirect("logout");
   }
 
-  res.status(200).render("intranet", { login });
+  res.status(200).render("intranet", { __route, login });
 });
 
 route.post("/salvanome", (req, res) => {
   const { error, value } = UpdateLoginSchema.validate(req.body);
   if (error || !Login.setUserLogin(value.oldLogin, value.newLogin)) {
     return res.render("intranet", {
+      __route,
       login: value.oldLogin,
       error: "Novo login inválido",
     });
@@ -80,6 +86,7 @@ route.post("/salvanome", (req, res) => {
   } catch (error) {
     res.clearCookie(COOKIE_LOGIN);
     return res.render("index", {
+      __route,
       error: "Something got wrong with the login sorry.",
     });
   }

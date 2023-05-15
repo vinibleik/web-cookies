@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1 class="login">{{login}}</h1>
-    <form action="salvanome" method="post">
+    <form action="/{{__route}}/salvanome" method="post">
       <input type="hidden" name="oldLogin" id="oldLogin" value="{{login}}"/>
       <label for="newLogin">Update Login:</label>
       <input type="text" name="newLogin" id="newLogin" value="{{login}}" />
@@ -18,7 +18,7 @@
     {{#error}}
       <a class="error">{{.}}</a>
     {{/error}}
-    <form action="logout" method="get">
+    <form action="/{{__route}}/logout" method="get">
       <button type="submit">Logout</button>
     </form>
   </body>
